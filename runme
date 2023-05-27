@@ -9,6 +9,8 @@ CWR="[\e[1;35mWARNING\e[0m]"
 CAC="[\e[1;33mACTION\e[0m]"
 INSTLOG="install.log"
 
+installed_dir=$(dirname $(readlink -f $(basename `pwd`)))
+
 # clear the screen
 clear
 
@@ -113,9 +115,39 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
         done
     fi
 
+    # Prepare
+    echo -e "$CNT - Boost pacman, update mirrors..."
+    tput setaf 6
+    echo "|» Parallel downlods -> 10"
+    tput sgr0
+
+    FIND="#ParallelDownloads = 5"
+    REPLACE="ParallelDownloads = 10"
+    sudo sed -i "s/$FIND/$REPLACE/g" /etc/pacman.conf
+    sleep 1
+
+    tput setaf 6
+    echo "|» Candy"
+    tput sgr0
+
+    FINDCOLOR='#Color'
+    REPLACECOLOR='Color\nILoveCandy'
+    sudo sed -i "s/$FINDCOLOR/$REPLACECOLOR/g" /etc/pacman.conf
+    sleep 1
+
+    echo 'QT_QPA_PLATFORMTHEME=qt5ct' | sudo tee -a /etc/environment &>> $INSTLOG
+    echo 'EXA_COLORS="di=1;33:da=37:ur=30;42:uw=30;42:ux=30;42:gr=30;43:gw=30;43:gx=30;43:tr=30;41:tw=30;41:tx=30;41:sn=37:sb=37:uu=32;1"' | sudo tee -a /etc/environment &>> $INSTLOG
+
+    sudo pacman -Sy &>> $INSTLOG
+    install_software rate-mirrors-bin
+    tput setaf 6
+    echo "|» Rate Mirrors. Please wait..."
+    tput sgr0
+    sudo rate-mirrors --allow-root --save /etc/pacman.d/mirrorlist arch &>> $INSTLOG
+
     # Stage 1 - main components
     echo -e "$CNT - Stage 1 - Installing main components, this may take a while..."
-    for SOFTWR in qtile qtile-extras-git alacritty dmenu fish flatpak libmad libzip lxappearance picom ripgrep rsync sxhkd volumeicon qt5ct xfce4-power-manager xorg-xkill
+    for SOFTWR in qtile qtile-extras-git alacritty dmenu fish flatpak libmad libzip lxappearance picom rate-mirrors-bin ripgrep rsync sxhkd volumeicon qt5ct xfce4-power-manager xorg-xkill network-manager-applet
     do
            install_software $SOFTWR
     done
@@ -160,4 +192,11 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     echo -e "$CNT - Enabling flatpack..."
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo &>> $INSTLOG
     sleep 1
+fi
+
+### Copy Config Files ###
+read -rep $'[\e[1;33mACTION\e[0m] - Would you like to copy config files? (y,n) ' CFG
+if [[ $CFG == "Y" || $CFG == "y" ]]; then
+    cp -rf $installed_dir/settings/* $HOME/.config/
+    cp -rf $installed_dir/home/oh* /home/
 fi
