@@ -1,0 +1,163 @@
+#!/bin/bash
+
+# set some colors
+CNT="[\e[1;36mNOTE\e[0m]"
+COK="[\e[1;32mOK\e[0m]"
+CER="[\e[1;31mERROR\e[0m]"
+CAT="[\e[1;37mATTENTION\e[0m]"
+CWR="[\e[1;35mWARNING\e[0m]"
+CAC="[\e[1;33mACTION\e[0m]"
+INSTLOG="install.log"
+
+# clear the screen
+clear
+
+# set some expectations for the user
+echo -e "$CNT - You are about to execute a script that would attempt to setup Qtile."
+sleep 1
+
+# attempt to discover if this is a VM or not
+echo -e "$CNT - Checking for Physical or VM..."
+ISVM=$(hostnamectl | grep Chassis)
+echo -e "Using $ISVM"
+
+# let the user know that we will use sudo
+echo -e "$CNT - This script will run some commands that require sudo. You will be prompted to enter your password.
+If you are worried about entering your password then you may want to review the content of the script."
+sleep 1
+
+# give the user an option to exit out
+read -rep $'[\e[1;33mACTION\e[0m] - Would you like to continue with the install (y,n) ' CONTINST
+if [[ $CONTINST == "Y" || $CONTINST == "y" ]]; then
+    echo -e "$CNT - Setup starting..."
+else
+    echo -e "$CNT - This script would now exit, no changes were made to your system."
+    exit
+fi
+
+# Ask if the use has an NVIDIA GPU
+read -rep $'[\e[1;33mACTION\e[0m] - Do you want to install Nvidia driver? (y,n) ' ISNVIDIA
+if [[ $ISNVIDIA == "Y" || $ISNVIDIA == "y" ]]; then
+    echo -e "$CWR - Please note that support for Nvidia GPUs is limited.
+    This script would attempt to set things up the best way it can.
+    If you do end up with a black screen after trying to login then the GPU is likely the issue."
+
+    ISNVIDIA=true
+else
+    ISNVIDIA=false
+fi
+
+### Disable wifi powersave mode ###
+read -rep $'[\e[1;33mACTION\e[0m] - Would you like to disable WiFi powersave? (y,n) ' WIFI
+if [[ $WIFI == "Y" || $WIFI == "y" ]]; then
+    LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
+    echo -e "$CNT - The following file has been created $LOC."
+    echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC &>> $INSTLOG
+    echo -e "\n"
+    echo -e "$CNT - Restarting NetworkManager service..."
+    sleep 1
+    sudo systemctl restart NetworkManager &>> $INSTLOG
+    sleep 3
+fi
+
+#### Check for package manager ####
+ISYAY=/sbin/yay
+if [ -f "$ISYAY" ]; then
+    echo -e "$COK - yay was located, moving on."
+else
+    echo -e "$CWR - Yay was NOT located.. yay is (still) required"
+    read -rep $'[\e[1;33mACTION\e[0m] - Would you like to install yay (y,n) ' INSTYAY
+    if [[ $INSTYAY == "Y" || $INSTYAY == "y" ]]; then
+        git clone https://aur.archlinux.org/yay-git.git &>> $INSTLOG
+        cd yay-git
+        makepkg -si --noconfirm &>> ../$INSTLOG
+        cd ..
+    else
+        echo -e "$CER - Yay is (still) required for this script, now exiting"
+        exit
+    fi
+    # update the yay database
+    echo -e "$CNT - Updating the yay database..."
+    yay -Suy --noconfirm &>> $INSTLOG
+fi
+
+# function that will test for a package and if not found it will attempt to install it
+install_software() {
+    # First lets see if the package is there
+    if yay -Q $1 &>> /dev/null ; then
+        echo -e "$COK - $1 is already installed."
+    else
+        # no package found so installing
+        echo -e "$CNT - Now installing $1 ..."
+        yay -S --noconfirm $1 &>> $INSTLOG
+        # test to make sure package installed
+        if yay -Q $1 &>> /dev/null ; then
+            echo -e "\e[1A\e[K$COK - $1 was installed."
+        else
+            # if this is hit then a package is missing, exit to review log
+            echo -e "\e[1A\e[K$CER - $1 install had failed, please check the install.log"
+            exit
+        fi
+    fi
+}
+
+### Install all of the above pacakges ####
+read -rep $'[\e[1;33mACTION\e[0m] - Would you like to install the packages? (y,n) ' INST
+if [[ $INST == "Y" || $INST == "y" ]]; then
+    # Setup Nvidia if it was selected
+    if [[ "$ISNVIDIA" == true ]]; then
+        echo -e "$CNT - Nvidia setup stage, this may take a while..."
+        for SOFTWR in nvidia nvidia-settings
+        do
+            install_software $SOFTWR
+        done
+    fi
+
+    # Stage 1 - main components
+    echo -e "$CNT - Stage 1 - Installing main components, this may take a while..."
+    for SOFTWR in qtile qtile-extras-git alacritty dmenu fish flatpak libmad libzip lxappearance picom ripgrep rsync sxhkd volumeicon qt5ct xfce4-power-manager xorg-xkill
+    do
+           install_software $SOFTWR
+    done
+
+    # Stage 2 - more tools
+    echo -e "$CNT - Stage 2 - Installing additional tools and utilities, this may take a while..."
+    for SOFTWR in avahi bash-completion bat exa krusader htop lshw man-db man-pages pacman-contrib pavucontrol polkit-gnome python-pylint rofi sddm time tree wget gzip p7zip unace unrar unzip wavpack
+    do
+        install_software $SOFTWR
+    done
+
+    # Stage 3 - some visual tools
+    echo -e "$CNT - Stage 3 - Installing theme and visual related tools and utilities, this may take a while..."
+    for SOFTWR in feh flameshot
+    do
+        install_software $SOFTWR
+    done
+
+    # Stage 4 - some fonts
+    echo -e "$CNT - Stage 3 - Installing theme and visual related tools and utilities, this may take a while..."
+    for SOFTWR in awesome-terminal-fonts noto-fonts ttf-font-awesome ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-mononoki-nerd
+    do
+        install_software $SOFTWR
+    done
+
+    # Start the avahi service
+    echo -e "$CNT - Starting the Avahi Service..."
+    sudo systemctl enable --now avahi-daemon.service &>> $INSTLOG
+    sleep 2
+
+    # Start the bluetooth service
+    echo -e "$CNT - Starting the Bluetooth Service..."
+    sudo systemctl enable --now bluetooth.service &>> $INSTLOG
+    sleep 2
+
+    # Enable the sddm login manager service
+    echo -e "$CNT - Enabling the SDDM Service..."
+    sudo systemctl enable sddm &>> $INSTLOG
+    sleep 2
+
+    # Enable flatpack
+    echo -e "$CNT - Enabling flatpack..."
+    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo &>> $INSTLOG
+    sleep 1
+fi
