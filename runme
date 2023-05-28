@@ -103,75 +103,6 @@ install_software() {
     fi
 }
 
-### Arcolinux ###
-read -rep $'[\e[1;33mACTION\e[0m] - Would you like to add Arcolinux repo and install software? (y,n) ' ARCO
-if [[ $ARCO == "Y" || $ARCO == "y" ]]; then
-    sudo pacman -S wget --noconfirm --needed &>> $INSTLOG
-    sudo wget https://github.com/arcolinux/arcolinux_repo/raw/main/x86_64/arcolinux-keyring-20251209-3-any.pkg.tar.zst -O /tmp/arcolinux-keyring-20251209-3-any.pkg.tar.zst &>> $INSTLOG
-    sudo pacman -U --noconfirm --needed /tmp/arcolinux-keyring-20251209-3-any.pkg.tar.zst &>> $INSTLOG
-    sudo wget https://github.com/arcolinux/arcolinux_repo/raw/main/x86_64/arcolinux-mirrorlist-git-23.04-02-any.pkg.tar.zst -O /tmp/arcolinux-mirrorlist-git-23.04-02-any.pkg.tar.zst &>> $INSTLOG
-    sudo pacman -U --noconfirm --needed /tmp/arcolinux-mirrorlist-git-23.04-02-any.pkg.tar.zst &>> $INSTLOG
-    if grep -q arcolinux_repo /etc/pacman.conf; then
-	echo "ArcoLinux repos are already in /etc/pacman.conf"
-    else
-echo '
-#[arcolinux_repo_testing]
-#SigLevel = Optional TrustedOnly
-#Include = /etc/pacman.d/arcolinux-mirrorlist
-
-[arcolinux_repo]
-SigLevel = Optional TrustedOnly
-Include = /etc/pacman.d/arcolinux-mirrorlist
-
-[arcolinux_repo_3party]
-SigLevel = Optional TrustedOnly
-Include = /etc/pacman.d/arcolinux-mirrorlist
-
-[arcolinux_repo_xlarge]
-SigLevel = Optional TrustedOnly
-Include = /etc/pacman.d/arcolinux-mirrorlist' | sudo tee --append /etc/pacman.conf &>> $INSTLOG
-    fi
-    sleep 3
-    for SOFTWR in archlinux-logout-git cpuid
-    do
-        install_software $SOFTWR
-    done
-fi
-
-### Bluetooth ###
-read -rep $'[\e[1;33mACTION\e[0m] - Would you like to install bluetooth software? (y,n) ' BLTH
-if [[ $BLTH == "Y" || $BLTH == "y" ]]; then
-    for SOFTWR in blueberry bluez bluez-libs bluez-utils
-    do
-        install_software $SOFTWR
-    done
-    echo -e "$CNT - Starting the Bluetooth Service..."
-    sudo systemctl enable bluetooth.service &>> $INSTLOG
-    sudo systemctl start bluetooth.service &>> $INSTLOG
-    if ! grep -q "load-module module-switch-on-connect" /etc/pulse/system.pa; then
-        echo 'load-module module-switch-on-connect' | sudo tee --append /etc/pulse/system.pa
-    fi
-    if ! grep -q "load-module module-bluetooth-policy" /etc/pulse/system.pa; then
-        echo 'load-module module-bluetooth-policy' | sudo tee --append /etc/pulse/system.pa
-    fi
-    if ! grep -q "load-module module-bluetooth-discover" /etc/pulse/system.pa; then
-        echo 'load-module module-bluetooth-discover' | sudo tee --append /etc/pulse/system.pa
-    fi
-    sleep 1
-fi
-
-### Cups ###
-read -rep $'[\e[1;33mACTION\e[0m] - Would you like to install Cups software? (y,n) ' CUPS
-if [[ $CUPS == "Y" || $CUPS == "y" ]]; then
-    for SOFTWR in cups cups-pdf ghostscript gsfonts gutenprint gtk3-print-backends libcups system-config-printer sane simple-scan cnijfilter-mg4200
-    do
-        install_software $SOFTWR
-    done
-    echo -e "$CNT - Starting the Cups Service..."
-    sudo systemctl enable --now cups.service &>> $INSTLOG
-    sleep 1
-fi
-
 ### Install all of the above pacakges ####
 read -rep $'[\e[1;33mACTION\e[0m] - Would you like to install the packages? (y,n) ' INST
 if [[ $INST == "Y" || $INST == "y" ]]; then
@@ -186,32 +117,19 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 
     # Prepare
     echo -e "$CNT - Boost pacman, update mirrors..."
-    tput setaf 6
-    echo "|» Parallel downlods -> 10"
-    tput sgr0
-
     FIND="#ParallelDownloads = 5"
     REPLACE="ParallelDownloads = 10"
     sudo sed -i "s/$FIND/$REPLACE/g" /etc/pacman.conf
     sleep 1
-
-    tput setaf 6
-    echo "|» Candy"
-    tput sgr0
-
     FINDCOLOR='#Color'
     REPLACECOLOR='Color\nILoveCandy'
     sudo sed -i "s/$FINDCOLOR/$REPLACECOLOR/g" /etc/pacman.conf
     sleep 1
-
     echo 'QT_QPA_PLATFORMTHEME=qt5ct' | sudo tee -a /etc/environment &>> $INSTLOG
     echo 'EXA_COLORS="di=1;33:da=37:ur=30;42:uw=30;42:ux=30;42:gr=30;43:gw=30;43:gx=30;43:tr=30;41:tw=30;41:tx=30;41:sn=37:sb=37:uu=32;1"' | sudo tee -a /etc/environment &>> $INSTLOG
-
     sudo pacman -Sy &>> $INSTLOG
     install_software rate-mirrors-bin
-    tput setaf 6
-    echo "|» Rate Mirrors. Please wait..."
-    tput sgr0
+    echo -e "$CNT - Rate mirrors..."
     sudo rate-mirrors --allow-root --save /etc/pacman.d/mirrorlist arch &>> $INSTLOG
 
     # Stage 1 - main components
@@ -258,16 +176,11 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     # Enable flatpack
     echo -e "$CNT - Enabling flatpack..."
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo &>> $INSTLOG
-    sleep 1
+    sleep 2
 
     # Start the avahi service
     echo -e "$CNT - Starting the Avahi Service..."
     sudo systemctl enable --now avahi-daemon.service &>> $INSTLOG
-    sleep 2
-
-    # Start the bluetooth service
-    echo -e "$CNT - Starting the Bluetooth Service..."
-    sudo systemctl enable --now bluetooth.service &>> $INSTLOG
     sleep 2
 
     # Enable the sddm login manager service
