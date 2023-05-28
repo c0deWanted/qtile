@@ -148,19 +148,19 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 
     # Stage 3 - some visual tools
     echo -e "$CNT - Stage 3 - Installing theme and visual related tools and utilities, this may take a while..."
-    for SOFTWR in feh flameshot
+    for SOFTWR in feh flameshot qogir-gtk-theme kvantum kvantum-theme-qogir-git nordzy-icon-theme-git vimix-cursors kali-themes
     do
         install_software $SOFTWR
     done
 
     # Stage 4 - some fonts
-    echo -e "$CNT - Stage 4 - Installing theme and visual related tools and utilities, this may take a while..."
+    echo -e "$CNT - Stage 4 - Installing fonts ..."
     for SOFTWR in awesome-terminal-fonts noto-fonts ttf-font-awesome ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-mononoki-nerd
     do
         install_software $SOFTWR
     done
 
-    # Stage 5 - some fonts
+    # Stage 5 - some Krusader
     echo -e "$CNT - Stage 5 - Installing Krusader, Thunderbird and dependencies..."
     for SOFTWR in krusader thunderbird kompare krename
     do
@@ -173,6 +173,7 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     do
         install_software $SOFTWR
     done
+
     # Enable flatpack
     echo -e "$CNT - Enabling flatpack..."
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo &>> $INSTLOG
