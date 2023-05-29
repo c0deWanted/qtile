@@ -134,14 +134,14 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 
     # Stage 1 - main components
     echo -e "$CNT - Stage 1 - Installing main components, this may take a while..."
-    for SOFTWR in qtile qtile-extras-git alacritty dmenu fish libmad libzip lxappearance picom rate-mirrors-bin ripgrep rsync sxhkd volumeicon qt5ct xfce4-power-manager xorg-xkill network-manager-applet
+    for SOFTWR in qtile qtile-extras-git alacritty dmenu faad2 fish libmad libzip lxappearance picom rate-mirrors-bin ripgrep rsync sxhkd volumeicon qt5ct xfce4-power-manager xorg-xkill network-manager-applet wavpack
     do
            install_software $SOFTWR
     done
 
     # Stage 2 - more tools
     echo -e "$CNT - Stage 2 - Installing additional tools and utilities, this may take a while..."
-    for SOFTWR in avahi bash-completion bat exa htop lshw man-db man-pages pacman-contrib pavucontrol polkit-gnome python-pylint rofi sddm time tree wget gzip p7zip unace unrar unzip wavpack
+    for SOFTWR in avahi bash-completion bat exa gnome-disk-utility htop lshw man-db man-pages pacman-contrib pavucontrol polkit-gnome python-pylint rofi sddm time tree wget gzip p7zip unace unrar unzip
     do
         install_software $SOFTWR
     done
@@ -194,6 +194,8 @@ fi
 ### Copy Config Files ###
 read -rep $'[\e[1;33mACTION\e[0m] - Would you like to copy config files? (y,n) ' CFG
 if [[ $CFG == "Y" || $CFG == "y" ]]; then
+    sudo cp $installed_dir/adds/files/_Aqtile.rasi /usr/share/rofi/themes/_Aqtile.rasi
     cp -rf $installed_dir/settings/* $HOME/.config/
     cp -rf $installed_dir/home/oh* /home/
+    echo -e "options snd-hda-intel power_save=0" | sudo tee -a /etc/modprobe.d/sound.conf &>> $INSTLOG
 fi
