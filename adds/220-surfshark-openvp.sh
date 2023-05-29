@@ -10,6 +10,6 @@ sudo wget https://my.surfshark.com/vpn/api/v1/server/configurations
 
 sudo unzip configurations
 
-sudo cp $installed_dir/Personal/home/oh/sysctl.conf /etc/sysctl.conf
+sudo cp $installed_dir/files/sysctl.conf /etc/sysctl.conf
 
 sudo sysctl -p
