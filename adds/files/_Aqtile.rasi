@@ -5,14 +5,14 @@
  ***********************************************/
 
 * {
-    backgroundcolor:          rgba ( 37, 37, 50, 100 % );
+    backgroundcolor:          rgba ( 22, 26, 29, 100 % );
     bg1:                      rgba ( 255, 255, 255, 100 % );
-    backgroundcoloralternate: rgba ( 37, 37, 50, 100 % );
-    separatorcolor:           rgba ( 47, 47, 60, 100 % );
-    scrollbarcolor:           rgba ( 57, 57, 70, 100 % );
-    foregroundcolor:          rgba( 131, 131, 150, 100 % );
-    foregroundcolorinverse:   rgba( 131, 148, 150, 100 % );
-    selectioncolor:           rgba( 57, 57, 70, 100 % );
+    backgroundcoloralternate: rgba ( 22, 26, 29, 100 % );
+    separatorcolor:           rgba ( 31, 35, 40, 100 % );
+    scrollbarcolor:           rgba ( 157, 157, 170, 100 % );
+    foregroundcolor:          rgba( 197, 197, 197, 100 % );
+    foregroundcolorinverse:   rgba( 197, 197, 197, 100 % );
+    selectioncolor:           rgba( 118, 108, 73, 100 % );
     font-size: 1px;
     border-color: @separatorcolor;
     background-color: @backgroundcolor;
@@ -25,12 +25,14 @@
 #window {
     background-color: @backgroundcolor;
     border-color: @separatorcolor;
-    border: 1;
+    width: 660px;
+    height: 940px;
+    border: 0;
     border-radius: 2px;
 }
 #mainbox {
     border: 0;
-    padding: 20;
+    padding: 5;
     background-color: @backgroundcoloralternate;
 }
 
@@ -42,7 +44,7 @@
 }
 #element {
     padding: 10;
-    border: 0 0 1 0;
+    border: 1 0 1 0;
     border-color: @separatorcolor;
     background-color: @backgroundcoloralternate;
 }
@@ -54,10 +56,9 @@
 #element.selected.normal {
     background-color: @selectioncolor;
     text-color: @foregroundcolorinverse;
-    border-radius: 0px;
-
-    border: 0 0 1 0;
-    border-color: @separatorcolor;
+    border-radius: 5px;
+    border: 10;
+    border-color: @backgroundcoloralternate;
 }
 
 #element.selected.active {

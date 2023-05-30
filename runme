@@ -148,10 +148,11 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 
     # Stage 3 - some visual tools
     echo -e "$CNT - Stage 3 - Installing theme and visual related tools and utilities, this may take a while..."
-    for SOFTWR in feh flameshot qogir-gtk-theme kvantum kvantum-theme-qogir-git nordzy-icon-theme-git vimix-cursors kali-themes
+    for SOFTWR in feh flameshot sweet-gtk-theme-mars-git kvantum nordzy-icon-theme vimix-cursors
     do
         install_software $SOFTWR
     done
+    sudo cp -r $installed_dir/adds/kvantum/* /usr/share/Kvantum
 
     # Stage 4 - some fonts
     echo -e "$CNT - Stage 4 - Installing fonts ..."

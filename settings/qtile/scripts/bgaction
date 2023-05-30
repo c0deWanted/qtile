@@ -1,0 +1,4 @@
+#!/bin/bash
+
+image=$(find ~/Pictures/Backgrounds -type f -print0 | shuf -zn 1)
+feh --bg-fill $image &

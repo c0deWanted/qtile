@@ -4,7 +4,7 @@
 CNT="[\e[1;36mNOTE\e[0m]"
 COK="[\e[1;32mOK\e[0m]"
 CER="[\e[1;31mERROR\e[0m]"
-INSTLOG="install.log"
+INSTLOG="software.log"
 
 installed_dir=$(dirname $(readlink -f $(basename `pwd`)))
 count=0
@@ -29,7 +29,7 @@ func_install() {
     fi
 }
 
-sudo pacman -Syy
+sudo pacman -Syy &>> $INSTLOG
 
 list=(
 #adobe-source-sans-fonts
@@ -42,13 +42,13 @@ deadbeef
 deluge-gtk
 duf
 evince
-faad2
 file-roller
 font-manager
 gimp
 gnome-calculator
 gvfs-smb
 hardinfo-git
+hblock
 hw-probe
 inxi
 libreoffice-fresh
@@ -67,6 +67,8 @@ pv
 solaar
 speedtest-cli
 system-config-printer
+tldr
+vnstat
 xcolor
 )
 
@@ -76,7 +78,8 @@ for name in "${list[@]}" ; do
 done
 
 echo -e "$CNT - Enabling services ..."
-sudo systemctl enable --now ntpd.service
-sudo systemctl enable --now cpupower.service
-sleep 2
+sudo hblock &>> $INSTLOG
+sudo systemctl enable --now ntpd.service &>> $INSTLOG
+sudo systemctl enable --now cpupower.service &>> $INSTLOG
+sudo systemctl enable --now vnstat.service &>> $INSTLOG
 echo -e "$COK"

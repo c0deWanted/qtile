@@ -5,7 +5,6 @@
 # Copyright (c) 2012 Craig Barnes
 # Copyright (c) 2013 horsik
 # Copyright (c) 2013 Tao Sauvage
-# Copyright (c) 2023 c0deWanted
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -137,17 +136,16 @@ for i, (name, kwargs) in enumerate(group_names, 1):
 #Theme name : RavenDark
 def init_colors():
     return [
-        #["#282C34", "#282C34"], # 0 : main background : dark grey - doom one
-        ["#282a33", "#282a33"], # 0 : main background : dark grey - Qogir-dark
+        ["#1e1e20", "#1e1e20"], # 0 : main background : dark grey - Qogir-dark
         ["#3B4252", "#3B4252"], # 1 : secondary background : dark
         ["#2674CF", "#2674CF"], # 2 : blue background : mid blue
         ["#F7B232", "#F7B232"], # 3 : yellow background : nice yellow
         ["#C2D5EA", "#C2D5EA"], # 4 : active : light blue-grey
         ["#6F88A4", "#6F88A4"], # 5 : inactiv : grey blue
         ["#E5E9F0", "#E5E9F0"], # 6 : main text color : pale grey
-        ["#0B0B17", "#0B0B17"], # 7 : raven balck
-        ["#a73020", "#a73020"], # 8 : red alert
-        ["#a3aab2", "#a3aab2"], # 9 : another background : light grey
+        ["#7a00ff", "#7a00ff"], # 7 : purple
+        ["#f20202", "#f20202"], # 8 : red alert
+        ["#00e1b4", "#00e1b4"], # 9 : green
     ]
 colors = init_colors()
 
@@ -180,23 +178,120 @@ screens = [
     Screen(
         bottom=bar.Bar(
             [
-                widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
+                widget.TextBox(
+                    font="FontAwesome",
+                    text="",
+                    padding = 15,
+                    foreground=colors[9],
+                    fontsize=24,
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty')},
                 ),
-                widget.TextBox("default config", name="default"),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+                widget.GroupBox(
+                    font="Noto Sans bold",
+                    fontsize = 14,
+                    borderwidth = 2,
+                    disable_drag = True,
+                    active = colors[6],
+                    inactive = colors[5],
+                    rounded = True,
+                    highlight_method = "block",
+                    this_current_screen_border = colors[2],
+                    other_current_screen_border = colors[2],
+                    this_screen_border = colors[5],
+                    other_screen_border = colors [5],
+                    background = colors[0],
+                    block_highlight_text_color = colors[6],
+                    hide_unused = True,
+                ),
+                # widget.WindowName(
+                #     font="Noto Sans medium",
+                #     fontsize = 16,
+                #     foreground = colors[4],
+                #     for_current_screen=True,
+                # ),
+                widget.Spacer(
+                    length=1580,
+                ),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
-                widget.Systray(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-                widget.QuickExit(),
+                #widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.ThermalSensor(
+                    font = "Mononoki Nerd Font Mono bold",
+                    fontsize = 20,
+                    tag_sensor = 'Package id 0',
+                    foreground = colors[3],
+                    foreground_alert = colors[8],
+                    threshold = 85,
+                    fmt = 'C {}',
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('hardinfo')},
+                    update_interval = 1,
+                    padding = 10,
+                ),
+                widget.ThermalSensor(
+                    font = "Mononoki Nerd Font Mono bold",
+                    fontsize = 20,
+                    foreground = colors[3],
+                    foreground_alert = colors[8],
+                    threshold = 85,
+                    fmt = 'P {}',
+                    padding = 25,
+                    update_interval = 1,
+                ),
+                widget.NvidiaSensors(
+                    font = "Mononoki Nerd Font Mono bold",
+                    fontsize = 20,
+                    foreground = colors[3],
+                    foreground_alert = colors[8],
+                    threshold = 85,
+                    padding = 10,
+                    format = 'G {temp}°C'
+                ),
+                widget.CheckUpdates(
+                    font="Mononoki Nerd Font Mono bold",
+                    fontsize = 20,
+                    update_interval = 3600,
+                    distro = "Arch_checkupdates",
+                    display_format = " Upd.{updates} ",
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e sudo pacman -Syu')},
+                    padding = 10,
+                ),
+                widget.KeyboardLayout(
+                    font="Mononoki Nerd Font Mono bold",
+                    fontsize = 24,
+                    foreground = colors[3],
+                    configured_keyboards = ['de', 'ru'],
+                    display_map = {'de':'D', 'ru':'R'},
+                    padding = 25,
+                ),
+                widget.Clock(
+                    font="Mononoki Nerd Font Mono bold",
+                    fontsize = 20,
+                    foreground = colors[6],
+                    format="%Y.%m.%d",
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e calcurse')},
+                ),
+                widget.Clock(
+                    font="Mononoki Nerd Font Mono bold",
+                    fontsize = 20,
+                    foreground = colors[3],
+                    format="%H:%M:%S",
+                ),
+                widget.Sep(
+                    linewidth = 0,
+                    padding = 20,
+                ),
+                widget.Systray(
+                    icon_size = 25,
+                    background=colors[1],
+                ),
+                widget.TextBox(
+                    font="FontAwesome",
+                    text="",
+                    padding = 15,
+                    foreground=colors[9],
+                    fontsize=24,
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('archlinux-logout')},
+                ),
             ],
             24,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
