@@ -43,6 +43,7 @@ FIND="Current=breeze"
 REPLACE="Current=arcolinux-simplicity"
 sudo sed -i "s/$FIND/$REPLACE/g" /etc/sddm.conf
 sudo cp -f $installed_dir/files/background.jpg /usr/share/sddm/themes/arcolinux-simplicity/images/background.jpg
+echo -e "\e[1A\e[K$COK - Sddm theme installed."
 sleep 2
 
 # Backup arco repos and reset to original

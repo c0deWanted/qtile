@@ -141,7 +141,7 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 
     # Stage 2 - more tools
     echo -e "$CNT - Stage 2 - Installing additional tools and utilities, this may take a while..."
-    for SOFTWR in avahi bash-completion bat exa gnome-disk-utility htop lshw man-db man-pages pacman-contrib pavucontrol polkit-gnome python-pylint rofi sddm time tree wget gzip p7zip unace unrar unzip
+    for SOFTWR in avahi bash-completion bat calcurse exa gnome-disk-utility htop lshw man-db man-pages pacman-contrib pavucontrol polkit-gnome python-pylint rofi sddm time tree wget gzip p7zip unace unrar unzip
     do
         install_software $SOFTWR
     done

@@ -35,7 +35,7 @@ list=(
 #adobe-source-sans-fonts
 brave-bin
 celluloid
-cmake
+#cmake
 cpuid
 cpupower
 deadbeef
@@ -50,8 +50,8 @@ gvfs-smb
 hardinfo-git
 hblock
 hw-probe
+iftop
 inxi
-libreoffice-fresh
 mlocate
 meld
 mousepad
@@ -60,6 +60,8 @@ networkmanager-openvpn
 nomacs
 ntp
 numlockx
+obsidian
+onlyoffice-bin
 openresolv
 peek
 python-pywal

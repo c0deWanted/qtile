@@ -106,15 +106,15 @@ keys.extend([
 ])
 
 def init_group_names():
-    return [("1", {'layout': 'MonadTall'}),
-            ("2", {'layout': 'MonadTall'}),
-            ("3", {'layout': 'MonadTall'}),
-            ("4", {'layout': 'MonadTall'}),
-            ("5", {'layout': 'MonadTall'}),
-            ("6", {'layout': 'MonadTall'}),
-            ("7", {'layout': 'MonadTall'}),
-            ("8", {'layout': 'MonadTall'}),
-            ("9", {'layout': 'MonadTall'}),
+    return [("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
             #("MAX", {'layout': 'max'}),
             #("MEDIA", {'layout': 'columns'}),
             #("MAIL", {'layout': 'columns'}),
@@ -136,16 +136,19 @@ for i, (name, kwargs) in enumerate(group_names, 1):
 #Theme name : RavenDark
 def init_colors():
     return [
-        ["#1e1e20", "#1e1e20"], # 0 : main background : dark grey - Qogir-dark
-        ["#3B4252", "#3B4252"], # 1 : secondary background : dark
-        ["#2674CF", "#2674CF"], # 2 : blue background : mid blue
-        ["#F7B232", "#F7B232"], # 3 : yellow background : nice yellow
+        ["#111416", "#111416"], # 0 : black
+        ["#1e1e20", "#1e1e20"], # 1 : secondary background : dark
+        ["#376bc3", "#376bc3"], # 2 : blue
+        ["#F7B232", "#F7B232"], # 3 : yellow
         ["#C2D5EA", "#C2D5EA"], # 4 : active : light blue-grey
         ["#6F88A4", "#6F88A4"], # 5 : inactiv : grey blue
         ["#E5E9F0", "#E5E9F0"], # 6 : main text color : pale grey
-        ["#7a00ff", "#7a00ff"], # 7 : purple
+        ["#aa5cff", "#aa5cff"], # 7 : purple
         ["#f20202", "#f20202"], # 8 : red alert
-        ["#00e1b4", "#00e1b4"], # 9 : green
+        ["#7cec3c", "#7cec3c"], # 9 : green
+        ["#ea1b52", "#ea1b52"], # 10 : pink
+        ["#ec743c", "#ec743c"], # 11 : peach
+
     ]
 colors = init_colors()
 
@@ -160,404 +163,160 @@ colors = init_colors()
 
 layouts = [
     #layout.Columns(margin=10, border_width=2, border_focus=colors[0], border_normal=colors[1]),
-    layout.MonadTall(margin=6, border_width=2, border_focus=colors[1], border_normal=colors[0]),
+    layout.MonadTall(margin=6, border_width=1, border_focus=colors[3], border_normal=colors[0]),
     #layout.Bsp(margin=0, border_width=0),
     #layout.Floating(border_width=1, border_focus=colors[2], border_normal=colors[3]),
     layout.Max(margin=18, border_width=0),
 ]
 
-# powerline = {
-#     "decorations": [
-#         PowerLineDecoration(
-#             path = 'forward_slash')
-#     ]
-# }
-
-
 screens = [
     Screen(
-        bottom=bar.Bar(
+        top=bar.Bar(
             [
+# --------------- LEFT SIDE -------------------------------------------------
+                widget.ThermalSensor(
+                    font="Noto Sans medium",
+                    fontsize = 18,
+                    tag_sensor = 'Package id 0',
+                    foreground = colors[6],
+                    foreground_alert = colors[8],
+                    threshold = 85,
+                    fmt = '{}',
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e htop')},
+                    update_interval = 1,
+                    padding = 10,
+                ),
+                widget.ThermalSensor(
+                    font="Noto Sans medium",
+                    fontsize = 18,
+                    foreground = colors[6],
+                    foreground_alert = colors[8],
+                    threshold = 85,
+                    fmt = '{}',
+                    padding = 10,
+                    update_interval = 1,
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('hardinfo')},
+                ),
+                widget.NvidiaSensors(
+                    font="Noto Sans medium",
+                    fontsize = 18,
+                    foreground = colors[6],
+                    foreground_alert = colors[8],
+                    threshold = 85,
+                    padding = 10,
+                    format = '{temp}°C',
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('nvidia-settings')},
+                ),
+                widget.CheckUpdates(
+                    font="FontAwesome",
+                    fontsize = 18,
+                    foreground = colors[11],
+                    colour_have_updates = colors[11],
+                    colour_no_updates = colors[11],
+                    update_interval = 600,
+                    distro = "Arch_checkupdates",
+                    display_format = " {updates} ",
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e yay')},
+                    padding = 30,
+                ),
                 widget.TextBox(
                     font="FontAwesome",
                     text="",
-                    padding = 15,
                     foreground=colors[9],
                     fontsize=24,
                     mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty')},
                 ),
+                # widget.Net(
+                #     font="FontAwesome",
+                #     fontsize = 20,
+                #     interface = "enp46s0",
+                #     format=' {down}',
+                #     foreground = colors[9],
+                #     padding = 10,
+                #     update_interval = 1,
+                # ),
+                # widget.Net(
+                #     font="FontAwesome",
+                #     fontsize = 20,
+                #     interface = "enp46s0",
+                #     format=' {up}',
+                #     foreground = colors[3],
+                #     padding = 10,
+                #     update_interval = 1,
+                # ),
+# --------------- MIDDLE -------------------------------------------------
+                widget.WindowName(
+                    font="Noto Sans medium",
+                    fontsize = 16,
+                    foreground = colors[4],
+                    for_current_screen=True,
+                    format = '',
+                ),
                 widget.GroupBox(
-                    font="Noto Sans bold",
-                    fontsize = 14,
+                    font="FontAwesome",
+                    fontsize = 24,
                     borderwidth = 2,
                     disable_drag = True,
-                    active = colors[6],
-                    inactive = colors[5],
+                    active = colors[5],
+                    inactive = colors[1],
                     rounded = True,
-                    highlight_method = "block",
-                    this_current_screen_border = colors[2],
-                    other_current_screen_border = colors[2],
+                    highlight_method = "text",
+                    this_current_screen_border = colors[3],
+                    other_current_screen_border = colors[3],
                     this_screen_border = colors[5],
                     other_screen_border = colors [5],
-                    background = colors[0],
-                    block_highlight_text_color = colors[6],
+                    block_highlight_text_color = colors[0],
                     hide_unused = True,
-                ),
-                # widget.WindowName(
-                #     font="Noto Sans medium",
-                #     fontsize = 16,
-                #     foreground = colors[4],
-                #     for_current_screen=True,
-                # ),
-                widget.Spacer(
-                    length=1580,
                 ),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
                 #widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-                widget.ThermalSensor(
-                    font = "Mononoki Nerd Font Mono bold",
-                    fontsize = 20,
-                    tag_sensor = 'Package id 0',
-                    foreground = colors[3],
-                    foreground_alert = colors[8],
-                    threshold = 85,
-                    fmt = 'C {}',
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('hardinfo')},
-                    update_interval = 1,
-                    padding = 10,
+
+# --------------- LEFT SIDE -------------------------------------------------
+                widget.WindowName(
+                    format = '',
                 ),
-                widget.ThermalSensor(
-                    font = "Mononoki Nerd Font Mono bold",
-                    fontsize = 20,
-                    foreground = colors[3],
-                    foreground_alert = colors[8],
-                    threshold = 85,
-                    fmt = 'P {}',
-                    padding = 25,
-                    update_interval = 1,
+                widget.Systray(
+                    font="FontAwesome",
+                    icon_size = 25,
                 ),
-                widget.NvidiaSensors(
-                    font = "Mononoki Nerd Font Mono bold",
-                    fontsize = 20,
-                    foreground = colors[3],
-                    foreground_alert = colors[8],
-                    threshold = 85,
-                    padding = 10,
-                    format = 'G {temp}°C'
+                widget.Spacer(
+                    length=30,
                 ),
-                widget.CheckUpdates(
-                    font="Mononoki Nerd Font Mono bold",
-                    fontsize = 20,
-                    update_interval = 3600,
-                    distro = "Arch_checkupdates",
-                    display_format = " Upd.{updates} ",
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e sudo pacman -Syu')},
-                    padding = 10,
+                widget.Clock(
+                    font="Noto Sans medium",
+                    fontsize = 18,
+                    foreground=colors[6],
+                    format="%d.%m.%y",
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e calcurse')},
                 ),
                 widget.KeyboardLayout(
-                    font="Mononoki Nerd Font Mono bold",
+                    font="FontAwesome",
                     fontsize = 24,
                     foreground = colors[3],
                     configured_keyboards = ['de', 'ru'],
-                    display_map = {'de':'D', 'ru':'R'},
-                    padding = 25,
+                    display_map = {'de':'', 'ru':''},
+                    padding = 15,
                 ),
                 widget.Clock(
-                    font="Mononoki Nerd Font Mono bold",
-                    fontsize = 20,
-                    foreground = colors[6],
-                    format="%Y.%m.%d",
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e calcurse')},
-                ),
-                widget.Clock(
-                    font="Mononoki Nerd Font Mono bold",
-                    fontsize = 20,
-                    foreground = colors[3],
+                    font="Noto Sans medium",
+                    fontsize = 18,
+                    foreground=colors[6],
                     format="%H:%M:%S",
                 ),
-                widget.Sep(
-                    linewidth = 0,
-                    padding = 20,
-                ),
-                widget.Systray(
-                    icon_size = 25,
-                    background=colors[1],
-                ),
-                widget.TextBox(
-                    font="FontAwesome",
-                    text="",
-                    padding = 15,
-                    foreground=colors[9],
-                    fontsize=24,
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('archlinux-logout')},
-                ),
             ],
-            24,
+            size = 32,
+            opacity = 0.8
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
     ),
 
-
-# screens = [
-# # Primary screen
-#     Screen(
-#          top=bar.Bar(
-#              [
-#                 widget.Sep(
-#                     linewidth = 0,
-#                     background = colors[0],
-#                     padding = 20,
-#                 ),
-#                 widget.GroupBox(
-#                     font="Noto Sans bold",
-#                     fontsize = 14,
-#                     borderwidth = 2,
-#                     disable_drag = True,
-#                     active = colors[6],
-#                     inactive = colors[5],
-#                     rounded = True,
-#                     highlight_method = "block",
-#                     this_current_screen_border = colors[2],
-#                     other_current_screen_border = colors[2],
-#                     this_screen_border = colors[5],
-#                     other_screen_border = colors [5],
-#                     background = colors[0],
-#                     block_highlight_text_color = colors[6],
-#                     hide_unused = True,
-#                 ),
-#                 widget.Spacer(
-#                     background=colors[0],
-#                     length=100,
-#                 ),
-#                 widget.WindowName(
-#                     font="Noto Sans medium",
-#                     fontsize = 20,
-#                     padding = 30,
-#                     foreground = colors[4],
-#                     background = colors[0],
-#                     for_current_screen=True,
-#                 ),
-#                 widget.CheckUpdates(
-#                     font="Noto Sans bold",
-#                     fontsize = 14,
-#                     update_interval = 3600,
-#                     distro = "Arch_checkupdates",
-#                     display_format = "Upd.  {updates} ",
-#                     foreground = colors[3],
-#                     background = colors[0],
-#                     #**powerline,
-#                     colour_have_updates = colors[3],
-#                     colour_no_updates = colors[1],
-#                     mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e sudo pacman -Syu')},
-#                     padding = 10,
-#                 ),
-#                 widget.KeyboardLayout(
-#                     font="Mononoki Nerd Font Mono bold",
-#                     fontsize = 20,
-#                     foreground = colors[3],
-#                     background= colors[0],
-#                     configured_keyboards = ['de', 'ru'],
-#                     display_map = {'de':'D', 'ru':'R'},
-#                     padding = 5,
-#                 ),
-#                 widget.Sep(
-#                     linewidth = 0,
-#                     background = colors[0],
-#                     padding = 20,
-#                 ),
-#                 widget.Systray(
-#                     padding = 10,
-#                     icon_size = 21,
-#                     background = colors[0],
-#                 ),
-#                 widget.Sep(
-#                     linewidth = 0,
-#                     padding = 20,
-#                     background = colors[0],
-#                 ),
-#                 widget.Clock(
-#                     font = "Noto Sans bold",
-#                     foreground = colors[6],
-#                     background = colors[0],
-#                     fontsize = 16,
-#                     padding = 15,
-#                     format="%Y.%m.%d",
-#                     mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e calcurse')},
-#                 ),
-#                 widget.Clock(
-#                     font = "Noto Sans bold",
-#                     foreground = colors[6],
-#                     background = colors[0],
-#                     fontsize = 16,
-#                     padding = 15,
-#                     format="%H:%M:%S",
-#                ),
-#             ],
-#             size = 32,
-#             opacity = 0.7
-#         ),
-#     ),
-# Secondary screen
     # Screen(
-    #     top=bar.Bar(
+    #     bottom=bar.Bar(
     #         [
-    #             widget.Sep(
-    #                 linewidth = 0,
-    #                 background = colors[0],
-    #                 padding = 10,
-    #             ),
-    #             widget.TextBox(
-    #                 font="FontAwesome",
-    #                 text="",
-    #                 foreground=colors[3],
-    #                 background=colors[0],
-    #                 fontsize=18,
-    #                 mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e vim /home/oh/.config/qtile/config.py')},
-    #             ),
-    #             widget.Sep(
-    #                     linewidth = 0,
-    #                     background = colors[0],
-    #                     padding = 15,
-    #             ),
-    #             widget.TextBox(
-    #                 font="FontAwesome",
-    #                 text="",
-    #                 foreground=colors[3],
-    #                 background=colors[0],
-    #                 fontsize=18,
-    #                 mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e vim /home/oh/.config/qtile/scripts/autostart.sh')},
-    #             ),
-    #             widget.Sep(
-    #                 linewidth = 0,
-    #                 background = colors[0],
-    #                 padding = 15,
-    #             ),
-    #             widget.TextBox(
-    #                 font="FontAwesome",
-    #                 text="",
-    #                 foreground=colors[3],
-    #                 background=colors[0],
-    #                 fontsize=18,
-    #                 mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e vim /home/oh/.config/sxhkd/sxhkdrc')},
-    #             ),
-    #             widget.Sep(
-    #                     linewidth = 0,
-    #                     background = colors[0],
-    #                     padding = 25,
-    #             ),
-    #             widget.GroupBox(
-    #                 font="Noto Sans bold",
-    #                 fontsize = 18,
-    #                 borderwidth = 2,
-    #                 disable_drag = True,
-    #                 active = colors[6],
-    #                 inactive = colors[5],
-    #                 rounded = True,
-    #                 highlight_method = "block",
-    #                 this_current_screen_border = colors[3],
-    #                 other_current_screen_border = colors[3],
-    #                 this_screen_border = colors[5],
-    #                 other_screen_border = colors [5],
-    #                 background = colors[0],
-    #                 block_highlight_text_color = colors[7],
-    #             ),
-    #             widget.Sep(
-    #                 linewidth = 0,
-    #                 background = colors[0],
-    #                 padding = 25,
-    #                 **powerline,
-    #             ),
-    #             widget.TextBox(
-    #                 font="FontAwesome",
-    #                 text="",
-    #                 foreground=colors[3],
-    #                 background=colors[0],
-    #                 fontsize=14,
-    #             ),
-    #             widget.WindowName(
-    #                 font="Mononoki Nerd Font Mono bold",
-    #                 fontsize = 20,
-    #                 padding = 30,
-    #                 foreground = colors[6],
-    #                 background = colors[0],
-    #             ),
-    #             # widget.CurrentLayout(
-    #             #     font="Mononoki Nerd Font Mono bold",
-    #             #     fontsize = 22,
-    #             #     padding = 10,
-    #             #     foreground = colors[7],
-    #             #     background = colors[3],
-    #             #     **powerline,
-    #             # ),
-    #             widget.ThermalSensor(
-    #                 font = "Mononoki Nerd Font Mono bold",
-    #                 fontsize = 22,
-    #                 tag_sensor = 'Package id 0',
-    #                 foreground = colors[6],
-    #                 background = colors[0],
-    #                 threshold = 90,
-    #                 fmt = 'C {}',
-    #                 mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('hardinfo')},
-    #                 update_interval = 1,
-    #                 padding = 10,
-    #             ),
-    #             widget.ThermalSensor(
-    #                 font = "Mononoki Nerd Font Mono bold",
-    #                 fontsize = 22,
-    #                 foreground = colors[6],
-    #                 background = colors[0],
-    #                 threshold = 90,
-    #                 fmt = 'P {}',
-    #                 padding = 25,
-    #                 update_interval = 1,
-    #             ),
-    #             widget.NvidiaSensors(
-    #                 font = "Mononoki Nerd Font Mono bold",
-    #                 fontsize = 22,
-    #                 foreground = colors[6],
-    #                 foreground_alert = colors[8],
-    #                 background = colors[0],
-    #                 padding = 10,
-    #                 format = 'G {temp}°C'
-    #             ),
-    #             widget.KeyboardLayout(
-    #                 font = "Noto Sans bold",
-    #                 fontsize = 20,
-    #                 foreground = colors[3],
-    #                 background= colors[0],
-    #                 configured_keyboards = ['de', 'ru'],
-    #                 padding = 25,
-    #             ),
-    #             # widget.Clock(
-    #             #     font = "Noto Sans bold",
-    #             #     foreground = colors[6],
-    #             #     background = colors[0],
-    #             #     fontsize = 18,
-    #             #     padding = 15,
-    #             #     format="%Y.%m.%d "
-    #             # ),
-    #             widget.Clock(
-    #                 font = "Noto Sans bold",
-    #                 foreground = colors[6],
-    #                 background = colors[0],
-    #                 fontsize = 22,
-    #                 padding = 15,
-    #                 format="%H:%M:%S",
-    #                 mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e calcurse')},
-    #            ),
-    #             widget.TextBox(
-    #                 font="FontAwesome",
-    #                 text="",
-    #                 foreground=colors[3],
-    #                 background=colors[0],
-    #                 fontsize=22,
-    #                 padding = 15,
-    #                 mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('archlinux-logout')},
-    #             ),
     #         ],
-    #         size = 28,
+    #         size = 24,
     #         opacity = 0.8
     #     ),
     # ),

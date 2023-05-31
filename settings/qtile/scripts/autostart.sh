@@ -12,7 +12,7 @@ picom --config $HOME/.config/qtile/scripts/picom.conf &
 #xrandr --output HDMI2 --mode 1920x1080 --pos 1920x0 --rotate normal --output HDMI1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output VIRTUAL1 --off
 #
 #xrandr --output HDMI-1 --primary --mode 2560x1440 --rate 74.97 --output eDP-1 --mode 2560x1440 --rate 165.00 --gamma 0.9 --brightness 0.6
-xrandr --output DP-4 --gamma 0.9 --brightness 0.6
+#xrandr --output DP-4 --gamma 0.9 --brightness 0.6
 #
 #Set your wallpaper
 feh --bg-fill $image &
@@ -22,7 +22,6 @@ sxhkd &
 emacs --daemon &
 solaar --window hide --battery-icons regular &
 nm-applet &
-#pamac-tray &
 xfce4-power-manager &
 numlockx on &
 blueberry-tray &
