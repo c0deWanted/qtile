@@ -17,8 +17,10 @@ if grep -q arcolinux_repo /etc/pacman.conf; then
   echo -e "$COK - ArcoLinux repos are already in /etc/pacman.conf"
   sleep 1
   else
-  echo -e "$CNT Getting the keys and mirrors for ArcoLinux"
-  sh arco/get-the-keys-and-repos.sh &>> $INSTLOG
+  echo -e "$CNT Copy arco"
+  sudo cp $installed_dir/files/pacman.conf.arco /etc/pacman.conf
+  # echo -e "$CNT Getting the keys and mirrors for ArcoLinux"
+  # sh arco/get-the-keys-and-repos.sh &>> $INSTLOG
   sudo pacman -Sy &>> $INSTLOG
 fi
 
