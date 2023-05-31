@@ -134,21 +134,21 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 
     # Stage 1 - main components
     echo -e "$CNT - Stage 1 - Installing main components, this may take a while..."
-    for SOFTWR in qtile qtile-extras-git alacritty dmenu faad2 fish libmad libzip lxappearance picom rate-mirrors-bin ripgrep rsync sxhkd volumeicon qt5ct xfce4-power-manager xorg-xkill network-manager-applet wavpack
+    for SOFTWR in qtile alacritty dmenu faad2 fish libmad libzip lxappearance picom rate-mirrors-bin ripgrep rsync sxhkd volumeicon qt5ct xfce4-power-manager xorg-xkill network-manager-applet wavpack
     do
            install_software $SOFTWR
     done
 
     # Stage 2 - more tools
     echo -e "$CNT - Stage 2 - Installing additional tools and utilities, this may take a while..."
-    for SOFTWR in avahi bash-completion bat calcurse exa gnome-disk-utility htop lshw man-db man-pages pacman-contrib pavucontrol polkit-gnome python-pylint rofi sddm time tree wget gzip p7zip unace unrar unzip
+    for SOFTWR in arcolinux-logout avahi bash-completion bat calcurse exa gnome-disk-utility htop lshw man-db man-pages pacman-contrib pavucontrol polkit-gnome python-pylint rofi sddm time tree wget gzip p7zip unace unrar unzip
     do
         install_software $SOFTWR
     done
 
     # Stage 3 - some visual tools
     echo -e "$CNT - Stage 3 - Installing theme and visual related tools and utilities, this may take a while..."
-    for SOFTWR in feh flameshot sweet-gtk-theme-mars-git kvantum nordzy-icon-theme vimix-cursors
+    for SOFTWR in feh flameshot simplicity-sddm-theme-git sweet-gtk-theme-mars-git kvantum nordzy-icon-theme vimix-cursors
     do
         install_software $SOFTWR
     done
