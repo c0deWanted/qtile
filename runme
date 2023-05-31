@@ -141,7 +141,7 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 
     # Stage 2 - more tools
     echo -e "$CNT - Stage 2 - Installing additional tools and utilities, this may take a while..."
-    for SOFTWR in arcolinux-logout avahi bash-completion bat calcurse exa gnome-disk-utility htop lshw man-db man-pages pacman-contrib pavucontrol polkit-gnome python-pylint rofi sddm time tree wget gzip p7zip unace unrar unzip
+    for SOFTWR in avahi bash-completion bat calcurse exa gnome-disk-utility htop lshw man-db man-pages pacman-contrib pavucontrol polkit-gnome python-pylint rofi sddm time tree wget gzip p7zip unace unrar unzip
     do
         install_software $SOFTWR
     done
@@ -196,6 +196,8 @@ fi
 read -rep $'[\e[1;33mACTION\e[0m] - Would you like to copy config files? (y,n) ' CFG
 if [[ $CFG == "Y" || $CFG == "y" ]]; then
     sudo cp $installed_dir/adds/files/_Aqtile.rasi /usr/share/rofi/themes/_Aqtile.rasi
+    sudo cp -f $installed_dir/files/sddm.conf /etc/sddm.conf
+    sudo cp -f $installed_dir/files/background.jpg /usr/share/sddm/themes/arcolinux-simplicity/images/background.jpg
     cp -rf $installed_dir/settings/* $HOME/.config/
     cp -rf $installed_dir/home/oh* /home/
     echo -e "options snd-hda-intel power_save=0" | sudo tee -a /etc/modprobe.d/sound.conf &>> $INSTLOG
