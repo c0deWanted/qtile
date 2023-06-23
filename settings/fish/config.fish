@@ -111,7 +111,7 @@ end
 #my
 alias showusers='awk -F ":" \'{print $1}\' /etc/passwd'
 alias yask='xrandr --output DP-4 --gamma 0.9 --brightness 0.6'
-alias who='xprop | grep WM_CLASS'
+alias wru='xprop | grep WM_CLASS'
 alias ems='/usr/bin/emacs --daemon &'
 alias emc='emacsclient -c -a 'vim''
 alias showcpu='cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor'

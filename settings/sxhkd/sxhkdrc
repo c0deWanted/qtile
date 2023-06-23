@@ -39,25 +39,9 @@ super + t
 super + z
     xfce4-power-manager -c
 
-#Pamac-manager
-super + p
-    pamac-manager
-
-#archlinux-tweak-tool
-super + a
-    archlinux-tweak-tool
-
-#Edit keys
-super + u
-    emacsclient -c ~/.config/sxhkd/sxhkdrc
-
-#Edit autostart
-super + i
-    emacsclient -c ~/.config/qtile/scripts/autostart.sh
-
-#Edit keys
+# Obsidian
 super + o
-    emacsclient -c ~/.config/qtile/config.py
+    obsidian
 
 #archlinux-logout
 super + x
@@ -66,6 +50,10 @@ super + x
 #Pavucontrol
 super + v
     pavucontrol
+
+#Change wallpaper
+super + b
+    ~/.config/qtile/scripts/bgaction
 
 #alacritty
 super + Return
@@ -88,6 +76,14 @@ super + space
 # SUPER + SHIFT KEYS
 #################################################################
 
+# Shutdown
+super + shift + p
+     alacritty -e shutdown now
+
+# Reboot 
+super + shift + i
+     alacritty -e reboot
+
 #reload sxhkd:
 super + shift + s
 	pkill -USR1 -x sxhkd
@@ -95,6 +91,10 @@ super + shift + s
 #################################################################
 # CONTROL + ALT KEYS
 #################################################################
+
+#chatGPT
+ctrl + alt + c
+     ~/AppImages/chat-gpt-0.10.3-amd64.AppImage 
 
 #Htop
 ctrl + alt + h

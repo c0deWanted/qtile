@@ -105,15 +105,15 @@ keys.extend([
 ])
 
 def init_group_names():
-    return [("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["emacs", "jetbrains-idea-ce"])]}),
-            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["brave-browser"])]}),
+    return [("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
             ("", {'layout': 'MonadTall'}),
             ("", {'layout': 'MonadTall'}),
-            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["krusader"])]}),
-            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["gimp-2.10", "nomacs"])]}),
-            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["virt-manager"])]}),
-            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["obsidian"])]}),
-            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["thunderbird"])]}),
+            ("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
+            ("", {'layout': 'MonadTall'}),
             #("MAX", {'layout': 'max'}),
             #("MEDIA", {'layout': 'columns'}),
             #("MAIL", {'layout': 'columns'}),
@@ -138,17 +138,15 @@ if __name__ in ["config", "__main__"]:
     group_names = init_group_names()
     groups = init_groups()
     groups.append(ScratchPad('scratchpad', [
-        DropDown('term', 'kitty', width=0.8, height=0.8, x=0.1, y=0.1, on_focus_lost_hide=False, opacity=1),
+        DropDown('term', 'alacritty', width=0.8, height=0.8, x=0.1, y=0.1, on_focus_lost_hide=False, opacity=1),
         DropDown('music', 'deadbeef', width=0.8, height=0.8, x=0.1, y=0.1, on_focus_lost_hide=False, opacity=0.8),
-        DropDown('pavu', 'pavucontrol', width=0.4, height=0.5, x=0.3, y=0.1, on_focus_lost_hide=False, opacity=0.8),
-        DropDown('torr', 'deluge', width=0.8, height=0.8, x=0.1, y=0.1, on_focus_lost_hide=False, opacity=0.9),
+        DropDown('pavu', 'pavucontrol', width=0.4, height=0.5, x=0.3, y=0.1, on_focus_lost_hide=False, opacity=1),
     ]))
 
 keys.extend([
     Key([mod1], "1", lazy.group['scratchpad'].dropdown_toggle('term')),
     Key([mod1], "2", lazy.group['scratchpad'].dropdown_toggle('music')),
     Key([mod1], "3", lazy.group['scratchpad'].dropdown_toggle('pavu')),
-    Key([mod1], "4", lazy.group['scratchpad'].dropdown_toggle('torr')),
 ])
 
 for i, (name, kwargs) in enumerate(group_names, 1):
@@ -169,7 +167,7 @@ def init_colors():
         ["#aa5cff", "#aa5cff"], # 7 : purple
         ["#f20202", "#f20202"], # 8 : red alert
         ["#7cec3c", "#7cec3c"], # 9 : green
-        ["#f629ca", "#f629ca"], # 10 : pink
+        ["#ea1b52", "#ea1b52"], # 10 : pink
         ["#ec743c", "#ec743c"], # 11 : peach
 
     ]
@@ -248,15 +246,6 @@ screens = [
                     foreground=colors[9],
                     fontsize=24,
                     mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty')},
-                    padding = 5,
-                ),
-                widget.TextBox(
-                    font="FontAwesome",
-                    text="",
-                    foreground=colors[7],
-                    fontsize=24,
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('/home/oh/.config/qtile/scripts/bgaction')},
-                    padding = 5,
                 ),
                 # widget.Net(
                 #     font="FontAwesome",

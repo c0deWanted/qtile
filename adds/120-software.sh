@@ -32,10 +32,10 @@ func_install() {
 sudo pacman -Syy &>> $INSTLOG
 
 list=(
-#adobe-source-sans-fonts
+adobe-source-sans-fonts
 brave-bin
 celluloid
-#cmake
+cmake
 cpuid
 cpupower
 deadbeef
