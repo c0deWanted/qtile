@@ -163,7 +163,7 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 
     # Stage 5 - some Krusader
     echo -e "$CNT - Stage 5 - Installing Krusader, Thunderbird and dependencies..."
-    for SOFTWR in krusader thunderbird kompare krename
+    for SOFTWR in krusader kde-cli-tools thunderbird kompare krename
     do
         install_software $SOFTWR
     done
