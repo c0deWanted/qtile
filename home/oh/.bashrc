@@ -4,6 +4,7 @@ export VISUAL='vim'
 export HISTCONTROL=ignoreboth:erasedups
 export PAGER='most'
 export PATH="$HOME/.emacs.d/bin:$PATH"
+export PATH="/mnt/first/Keyper:$PATH"
 
 #Ibus settings if you need them
 #type ibus-setup in terminal to change settings and start the daemon

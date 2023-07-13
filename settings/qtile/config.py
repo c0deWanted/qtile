@@ -106,11 +106,11 @@ keys.extend([
 
 def init_group_names():
     return [("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["emacs", "jetbrains-idea-ce"])]}),
-            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["brave-browser"])]}),
+            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["brave-browser", "Navigator"])]}),
             ("", {'layout': 'MonadTall'}),
             ("", {'layout': 'MonadTall'}),
-            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["krusader"])]}),
-            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["gimp-2.10", "nomacs"])]}),
+            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["krusader", "geeqie"])]}),
+            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["gimp-2.10"])]}),
             ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["virt-manager"])]}),
             ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["obsidian"])]}),
             ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["thunderbird"])]}),
@@ -138,7 +138,7 @@ if __name__ in ["config", "__main__"]:
     group_names = init_group_names()
     groups = init_groups()
     groups.append(ScratchPad('scratchpad', [
-        DropDown('term', 'kitty', width=0.8, height=0.8, x=0.1, y=0.1, on_focus_lost_hide=False, opacity=1),
+        DropDown('term', 'kitty', width=0.9, height=0.9, x=0.05, y=0.05, on_focus_lost_hide=False, opacity=1),
         DropDown('music', 'deadbeef', width=0.8, height=0.8, x=0.1, y=0.1, on_focus_lost_hide=False, opacity=0.8),
         DropDown('pavu', 'pavucontrol', width=0.4, height=0.5, x=0.3, y=0.1, on_focus_lost_hide=False, opacity=0.8),
         DropDown('torr', 'deluge', width=0.8, height=0.8, x=0.1, y=0.1, on_focus_lost_hide=False, opacity=0.9),

@@ -2,6 +2,9 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
+set -x PATH $PATH /mnt/first/Keyper
+set -x PATH $PATH /home/oh/AppImages/mullvad-browser
+
 # Supresses fish's intro message
 set fish_greeting
 
@@ -109,6 +112,7 @@ end
 
 ### ALIASES ###
 #my
+alias mullvad='cd /home/oh/AppImages/mullvad-browser && ./start-mullvad-browser.desktop'
 alias showusers='awk -F ":" \'{print $1}\' /etc/passwd'
 alias yask='xrandr --output DP-4 --gamma 0.9 --brightness 0.6'
 alias wru='xprop | grep WM_CLASS'

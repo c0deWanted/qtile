@@ -19,9 +19,13 @@
 # SUPER + ... KEYS
 #################################################################
 
-#Qutebrowser
+#Brave browser
 super + w
     brave
+
+#Mullvad browser
+super + m 
+    ~/AppImages/mullvad-browser/Browser/start-mullvad-browser --detach
 
 #Emacs client
 super + e

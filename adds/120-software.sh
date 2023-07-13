@@ -34,7 +34,7 @@ sudo pacman -Syy &>> $INSTLOG
 list=(
 adobe-source-sans-fonts
 brave-bin
-celluloid
+#celluloid
 cmake
 cpuid
 cpupower
@@ -44,6 +44,7 @@ duf
 evince
 file-roller
 font-manager
+geeqie
 gimp
 gnome-calculator
 gvfs-smb
@@ -57,7 +58,7 @@ meld
 mousepad
 mpv
 networkmanager-openvpn
-nomacs
+#nomacs
 ntp
 numlockx
 obsidian
