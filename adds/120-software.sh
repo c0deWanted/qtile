@@ -34,7 +34,7 @@ sudo pacman -Syy &>> $INSTLOG
 list=(
 adobe-source-sans-fonts
 brave-bin
-#celluloid
+celluloid
 cmake
 cpuid
 cpupower
@@ -53,6 +53,7 @@ hblock
 hw-probe
 iftop
 inxi
+libreoffice-fresh
 mlocate
 meld
 mousepad
@@ -62,7 +63,7 @@ networkmanager-openvpn
 ntp
 numlockx
 obsidian
-onlyoffice-bin
+#onlyoffice-bin
 openresolv
 peek
 python-pywal

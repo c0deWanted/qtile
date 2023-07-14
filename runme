@@ -134,7 +134,7 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 
     # Stage 1 - main components
     echo -e "$CNT - Stage 1 - Installing main components, this may take a while..."
-    for SOFTWR in qtile alacritty dmenu faad2 fish libmad libzip lxappearance picom rate-mirrors-bin ripgrep rsync sxhkd volumeicon qt5ct xfce4-power-manager xorg-xkill network-manager-applet wavpack xorg-xrandr
+    for SOFTWR in qtile alacritty dmenu faad2 fish kitty libmad libzip lxappearance picom rate-mirrors-bin ripgrep rsync sxhkd volumeicon qt5ct xfce4-power-manager xorg-xkill network-manager-applet wavpack xorg-xrandr
     do
            install_software $SOFTWR
     done

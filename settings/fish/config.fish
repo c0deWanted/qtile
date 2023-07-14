@@ -24,7 +24,7 @@ function fish_prompt
 end
 set -x EDITOR vim
 set -x VISUAL vim
-set -x TERM alacritty
+set -x TERM kitty
 # Sets the terminal type for proper colors
 set TERM "xterm-256color"
 
@@ -147,6 +147,8 @@ alias gcom='git commit -m'
 alias gremadd='git remote add origin'
 alias rmgitcache="rm -r ~/.cache/git"
 alias grh="git reset --hard"
+#Kitty
+alias icat='kitty +kitten icat'
 # navigation
 alias ..='cd ..'
 alias ...='cd ../..'

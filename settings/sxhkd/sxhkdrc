@@ -59,18 +59,18 @@ super + v
 super + b
     ~/.config/qtile/scripts/bgaction
 
-#alacritty
+#kitty
 super + Return
-    alacritty
+    kitty
 
 #Xkill
 super + Escape
     xkill
 
 #Keyboard dependent
-#alacritty
+#kitty
 super + KP_Enter
-	alacritty
+	kitty
 
 #dmenu
 super + space

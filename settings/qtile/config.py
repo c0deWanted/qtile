@@ -38,7 +38,7 @@ mod2 = "control"
 mod9 = "shift"
 home = os.path.expanduser('~')
 
-myTerm = "alacritty"
+myTerm = "kitty"
 myBrowser = "brave"
 #terminal = guess_terminal()
 
