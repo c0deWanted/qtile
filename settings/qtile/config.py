@@ -75,7 +75,7 @@ keys = [
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "shift"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "f", lazy.window.toggle_fullscreen()),
+    Key([mod, "shift"], "f", lazy.window.toggle_fullscreen()),
     Key([mod, "shift"], "space", lazy.window.toggle_floating()),
     Key([mod9], "Shift_R",  lazy.widget["keyboardlayout"].next_keyboard(), desc="Next keyboard layout."),
 #
@@ -104,16 +104,17 @@ keys.extend([
     Key([mod,"shift"], "Left", lazy.function(window_to_previous_screen, switch_screen=True)),
 ])
 
+
 def init_group_names():
-    return [("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["emacs", "jetbrains-idea-ce"])]}),
+    return [("", {'layout': 'max', 'matches':[Match(wm_class=["emacs", "jetbrains-idea-ce"])]}),
             ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["brave-browser", "Navigator"])]}),
             ("", {'layout': 'MonadTall'}),
             ("", {'layout': 'MonadTall'}),
             ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["krusader", "geeqie"])]}),
             ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["gimp-2.10"])]}),
             ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["virt-manager"])]}),
-            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["obsidian"])]}),
-            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["thunderbird"])]}),
+            ("", {'layout': 'max', 'matches':[Match(wm_class=["obsidian"])]}),
+            ("", {'layout': 'max', 'matches':[Match(wm_class=["thunderbird"])]}),
             #("MAX", {'layout': 'max'}),
             #("MEDIA", {'layout': 'columns'}),
             #("MAIL", {'layout': 'columns'}),
@@ -171,6 +172,11 @@ def init_colors():
         ["#7cec3c", "#7cec3c"], # 9 : green
         ["#f629ca", "#f629ca"], # 10 : pink
         ["#ec743c", "#ec743c"], # 11 : peach
+        ["#3b3b3c", "#3b3b3c"], # 12 : grey
+        ["#18baeb", "#18baeb"], # 13 : light blue
+        ["#7e97b3", "#7e97b3"], # 14 : light inactive
+        ["#b3b7bd", "#b3b7bd"], # 15 : grey readable
+
 
     ]
 colors = init_colors()
@@ -186,7 +192,7 @@ colors = init_colors()
 
 layouts = [
     #layout.Columns(margin=10, border_width=2, border_focus=colors[0], border_normal=colors[1]),
-    layout.MonadTall(margin=6, border_width=1, border_focus=colors[3], border_normal=colors[0]),
+    layout.MonadTall(margin=10, border_width=1, border_focus=colors[3], border_normal=colors[0]),
     #layout.Bsp(margin=0, border_width=0),
     #layout.Floating(border_width=1, border_focus=colors[2], border_normal=colors[3]),
     layout.Max(margin=18, border_width=0),
@@ -194,45 +200,217 @@ layouts = [
 
 screens = [
     Screen(
-        top=bar.Bar(
+        bottom=bar.Bar(
             [
 # --------------- LEFT SIDE -------------------------------------------------
+                widget.TextBox(
+                    font="FontAwesome",
+                    text="",
+                    foreground=colors[2],
+                    fontsize=20,
+                    padding = 6,
+                ),
+                widget.CPU(
+                    font="Noto Sans bold",
+                    fontsize = 20,
+                    foreground = colors[15],
+                    format = '{freq_current}GHz  {load_percent}%',
+                ),
                 widget.ThermalSensor(
-                    font="Noto Sans medium",
-                    fontsize = 18,
+                    font="Noto Sans bold",
+                    fontsize = 20,
                     tag_sensor = 'Package id 0',
                     foreground = colors[6],
                     foreground_alert = colors[8],
-                    threshold = 85,
+                    threshold = 90,
                     fmt = '{}',
                     mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e htop')},
                     update_interval = 1,
-                    padding = 10,
+                    padding = 8,
+                ),
+                widget.Spacer(
+                    length=16,
+                ),
+                widget.TextBox(
+                    font="FontAwesome",
+                    text="",
+                    foreground=colors[3],
+                    fontsize=20,
                 ),
                 widget.ThermalSensor(
-                    font="Noto Sans medium",
-                    fontsize = 18,
+                    font="Noto Sans bold",
+                    fontsize = 20,
                     foreground = colors[6],
                     foreground_alert = colors[8],
-                    threshold = 85,
+                    threshold = 90,
                     fmt = '{}',
-                    padding = 10,
                     update_interval = 1,
                     mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('hardinfo')},
                 ),
+                widget.Spacer(
+                    length=16,
+                ),
+                widget.Image(
+                    filename = '~/.config/qtile/img/nvidia.png',
+                ),
+                widget.Spacer(
+                    length=6,
+                ),
                 widget.NvidiaSensors(
-                    font="Noto Sans medium",
-                    fontsize = 18,
+                    font="Noto Sans bold",
+                    fontsize = 20,
                     foreground = colors[6],
                     foreground_alert = colors[8],
-                    threshold = 85,
-                    padding = 10,
+                    threshold = 90,
                     format = '{temp}°C',
                     mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('nvidia-settings')},
                 ),
+                widget.Spacer(
+                    length=16,
+                ),
+                widget.TextBox(
+                    font="FontAwesome",
+                    text="",
+                    foreground=colors[14],
+                    fontsize=20,
+                ),
+                widget.Memory(
+                    font="Noto Sans bold",
+                    fontsize = 20,
+                    measure_mem = 'G',
+                    fmt = '{}',
+                    foreground = colors[6],
+                ),
+                # widget.TaskList(
+                # ),
+                widget.WindowName(
+                    format = '',
+                ),
+# --------------- MIDDLE -------------------------------------------------
+                widget.TextBox(
+                    font="FontAwesome",
+                    text="",
+                    foreground=colors[14],
+                    fontsize=20,
+                    padding = 8,
+                ),
+                widget.DF(
+                    font="Noto Sans bold",
+                    fontsize = 20,
+                    padding = 8,
+                    visible_on_warn=False,
+                    foreground = colors[6],
+                    partition = '/',
+                    format = '{uf}{m} - {r:.0f}%'
+                ),
+                widget.TextBox(
+                    font="FontAwesome",
+                    text="",
+                    foreground=colors[14],
+                    fontsize=20,
+                    padding = 8,
+                ),
+                widget.DF(
+                    font="Noto Sans bold",
+                    fontsize = 20,
+                    padding = 8,
+                    visible_on_warn=False,
+                    foreground = colors[6],
+                    partition = '/mnt/first',
+                    format = '{uf}{m} - {r:.0f}%'
+                ),
+                widget.TextBox(
+                    font="FontAwesome",
+                    text="",
+                    foreground=colors[14],
+                    fontsize=20,
+                    padding = 8,
+                ),
+                widget.DF(
+                    font="Noto Sans bold",
+                    fontsize = 20,
+                    padding = 8,
+                    visible_on_warn=False,
+                    foreground = colors[6],
+                    partition = '/mnt/second',
+                    format = '{uf}{m} - {r:.0f}%'
+                ),
+                widget.WindowName(
+                    format = '',
+                ),
+# --------------- RIGHT SIDE -------------------------------------------------
+                widget.Net(
+                    font="FontAwesome bold",
+                    fontsize = 20,
+                    interface = "enp46s0",
+                    format=' {down}',
+                    foreground = colors[6],
+                    padding = 10,
+                    update_interval = 1,
+                    prefix = 'k',
+                ),
+                widget.Net(
+                    font="FontAwesome bold",
+                    fontsize = 20,
+                    interface = "enp46s0",
+                    format=' {up}',
+                    foreground = colors[6],
+                    padding = 10,
+                    update_interval = 1,
+                    prefix = 'k',
+                ),
+                widget.NetGraph(
+                    type='line',
+                    line_width = 4,
+                    border_width = 0,
+                    bandwidth_type='down',
+                ),
+                widget.NetGraph(
+                    type='line',
+                    line_width = 4,
+                    border_width = 0,
+                    bandwidth_type='up',
+                    graph_color= colors[3],
+                ),
+                # widget.Net(
+                #     font="Noto Sans medium",
+                #     fontsize = 18,
+                #     prefix = 'k',
+                # ),
+                widget.Systray(
+                    icon_size = 25,
+                    padding = 8,
+                ),
+                widget.Spacer(
+                    length=25,
+                ),
+            ],
+            size = 22,
+            opacity = 0.8
+        ),
+
+        top=bar.Bar(
+            [
+# --------------- LEFT SIDE -------------------------------------------------
+                widget.TextBox(
+                    font="FontAwesome",
+                    text="",
+                    foreground=colors[9],
+                    fontsize=28,
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty')},
+                    padding = 5,
+                ),
+                widget.TextBox(
+                    font="FontAwesome",
+                    text="",
+                    foreground=colors[11],
+                    fontsize=28,
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('/home/oh/.config/qtile/scripts/bgaction')},
+                    padding = 5,
+                ),
                 widget.CheckUpdates(
                     font="FontAwesome",
-                    fontsize = 18,
+                    fontsize = 24,
                     foreground = colors[11],
                     colour_have_updates = colors[11],
                     colour_no_updates = colors[11],
@@ -242,89 +420,41 @@ screens = [
                     mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e yay')},
                     padding = 30,
                 ),
-                widget.TextBox(
-                    font="FontAwesome",
-                    text="",
-                    foreground=colors[9],
-                    fontsize=24,
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty')},
-                    padding = 5,
-                ),
-                widget.TextBox(
-                    font="FontAwesome",
-                    text="",
-                    foreground=colors[7],
-                    fontsize=24,
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('/home/oh/.config/qtile/scripts/bgaction')},
-                    padding = 5,
-                ),
-                # widget.Net(
-                #     font="FontAwesome",
-                #     fontsize = 20,
-                #     interface = "enp46s0",
-                #     format=' {down}',
-                #     foreground = colors[9],
-                #     padding = 10,
-                #     update_interval = 1,
-                # ),
-                # widget.Net(
-                #     font="FontAwesome",
-                #     fontsize = 20,
-                #     interface = "enp46s0",
-                #     format=' {up}',
-                #     foreground = colors[3],
-                #     padding = 10,
-                #     update_interval = 1,
-                # ),
-# --------------- MIDDLE -------------------------------------------------
                 widget.WindowName(
-                    font="Noto Sans medium",
-                    fontsize = 16,
-                    foreground = colors[4],
-                    for_current_screen=True,
                     format = '',
                 ),
+# --------------- MIDDLE -------------------------------------------------
                 widget.GroupBox(
                     font="FontAwesome",
-                    fontsize = 24,
+                    fontsize = 28,
                     borderwidth = 2,
                     disable_drag = True,
-                    active = colors[5],
-                    inactive = colors[1],
+                    active = colors[12],
+                    inactive = colors[0],
                     rounded = True,
                     highlight_method = "text",
                     this_current_screen_border = colors[3],
+                    #useless for text method.
                     other_current_screen_border = colors[3],
                     this_screen_border = colors[5],
                     other_screen_border = colors [5],
-                    block_highlight_text_color = colors[0],
+                    block_highlight_text_color = colors[1],
                     hide_unused = True,
                 ),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
-                #widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-
-# --------------- LEFT SIDE -------------------------------------------------
                 widget.WindowName(
                     format = '',
                 ),
-                widget.Systray(
-                    font="FontAwesome",
-                    icon_size = 25,
-                ),
-                widget.Spacer(
-                    length=30,
-                ),
+# --------------- RIGHT SIDE -------------------------------------------------
                 widget.Clock(
                     font="Noto Sans medium",
-                    fontsize = 18,
+                    fontsize = 22,
                     foreground=colors[6],
                     format="%d.%m.%y",
                     mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e calcurse')},
                 ),
                 widget.KeyboardLayout(
                     font="FontAwesome",
-                    fontsize = 24,
+                    fontsize = 28,
                     foreground = colors[3],
                     configured_keyboards = ['de', 'ru'],
                     display_map = {'de':'', 'ru':''},
@@ -332,26 +462,37 @@ screens = [
                 ),
                 widget.Clock(
                     font="Noto Sans medium",
-                    fontsize = 18,
+                    fontsize = 22,
                     foreground=colors[6],
                     format="%H:%M:%S",
                 ),
             ],
-            size = 32,
+            size = 38,
             opacity = 0.8
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
     ),
-
     # Screen(
-    #     bottom=bar.Bar(
+    #     top=bar.Bar(
     #         [
+    #             widget.WindowName(
+    #                 font="Noto Sans medium",
+    #                 fontsize = 16,
+    #                 foreground = colors[4],
+    #                 for_current_screen=True,
+    #                 format = '',
+    #             ),
+    #             # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+    #             # widget.StatusNotifier(),
+    #             #widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
     #         ],
-    #         size = 24,
+    #         size = 32,
     #         opacity = 0.8
+    #         # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+    #         # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
     #     ),
     # ),
+
+
 ]
 
 # Drag floating layouts.

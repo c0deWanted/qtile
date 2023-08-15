@@ -33,6 +33,7 @@ sudo pacman -Syy &>> $INSTLOG
 
 list=(
 adobe-source-sans-fonts
+baobab
 brave-bin
 celluloid
 cmake
@@ -44,6 +45,7 @@ duf
 evince
 file-roller
 font-manager
+gdu
 geeqie
 gimp
 gnome-calculator
