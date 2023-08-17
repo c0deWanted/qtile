@@ -107,7 +107,7 @@ keys.extend([
 
 def init_group_names():
     return [("", {'layout': 'max', 'matches':[Match(wm_class=["emacs", "jetbrains-idea-ce"])]}),
-            ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["brave-browser", "Navigator"])]}),
+            ("", {'layout': 'max', 'matches':[Match(wm_class=["brave-browser", "Navigator"])]}),
             ("", {'layout': 'MonadTall'}),
             ("", {'layout': 'MonadTall'}),
             ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["krusader", "geeqie"])]}),
@@ -115,25 +115,10 @@ def init_group_names():
             ("", {'layout': 'MonadTall', 'matches':[Match(wm_class=["virt-manager"])]}),
             ("", {'layout': 'max', 'matches':[Match(wm_class=["obsidian"])]}),
             ("", {'layout': 'max', 'matches':[Match(wm_class=["thunderbird"])]}),
-            #("MAX", {'layout': 'max'}),
-            #("MEDIA", {'layout': 'columns'}),
-            #("MAIL", {'layout': 'columns'}),
-            #("MON", {'layout': 'bsp'}),
-
             ]
-
 
 def init_groups():
     return [Group(name, **kwargs) for name, kwargs in group_names]
-
-# groups=[Group("", label='layout', layout='MonadTall'),
-#         Group("", label='layout', layout='MonadTall'),
-#         ScratchPad("scratchpad",[DropDown("term", "alacritty")]),
-#         ]
-
-# groups.append(ScratchPad('scratchpad', [
-#     DropDown('term', 'alacritty', width=0.4, x=0.3, y=0.2),
-# ]))
 
 if __name__ in ["config", "__main__"]:
     group_names = init_group_names()
@@ -157,7 +142,6 @@ for i, (name, kwargs) in enumerate(group_names, 1):
     keys.append(Key([mod, "shift"], str(i), lazy.window.togroup(name)))
 
 # COLORS FOR THE BAR
-#Theme name : RavenDark
 def init_colors():
     return [
         ["#111416", "#111416"], # 0 : black
@@ -176,25 +160,12 @@ def init_colors():
         ["#18baeb", "#18baeb"], # 13 : light blue
         ["#7e97b3", "#7e97b3"], # 14 : light inactive
         ["#b3b7bd", "#b3b7bd"], # 15 : grey readable
-
-
     ]
+
 colors = init_colors()
 
-# def init_layout_theme():
-#     return {"margin":7,
-#             "border_width":2,
-#             "border_focus": colors[2],
-#             "border_normal": colors[0]
-#             }
-
-# layout_theme = init_layout_theme()
-
 layouts = [
-    #layout.Columns(margin=10, border_width=2, border_focus=colors[0], border_normal=colors[1]),
     layout.MonadTall(margin=10, border_width=1, border_focus=colors[3], border_normal=colors[0]),
-    #layout.Bsp(margin=0, border_width=0),
-    #layout.Floating(border_width=1, border_focus=colors[2], border_normal=colors[3]),
     layout.Max(margin=18, border_width=0),
 ]
 
@@ -209,12 +180,14 @@ screens = [
                     foreground=colors[2],
                     fontsize=20,
                     padding = 6,
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('kitty htop')},
                 ),
                 widget.CPU(
                     font="Noto Sans bold",
                     fontsize = 20,
                     foreground = colors[15],
                     format = '{freq_current}GHz  {load_percent}%',
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('kitty htop')},
                 ),
                 widget.ThermalSensor(
                     font="Noto Sans bold",
@@ -224,7 +197,7 @@ screens = [
                     foreground_alert = colors[8],
                     threshold = 90,
                     fmt = '{}',
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e htop')},
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('kitty htop')},
                     update_interval = 1,
                     padding = 8,
                 ),
@@ -236,6 +209,7 @@ screens = [
                     text="",
                     foreground=colors[3],
                     fontsize=20,
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('hardinfo')},
                 ),
                 widget.ThermalSensor(
                     font="Noto Sans bold",
@@ -252,6 +226,7 @@ screens = [
                 ),
                 widget.Image(
                     filename = '~/.config/qtile/img/nvidia.png',
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('nvidia-settings')},
                 ),
                 widget.Spacer(
                     length=6,
@@ -281,8 +256,6 @@ screens = [
                     fmt = '{}',
                     foreground = colors[6],
                 ),
-                # widget.TaskList(
-                # ),
                 widget.WindowName(
                     format = '',
                 ),
@@ -359,19 +332,19 @@ screens = [
                     update_interval = 1,
                     prefix = 'k',
                 ),
-                widget.NetGraph(
-                    type='line',
-                    line_width = 4,
-                    border_width = 0,
-                    bandwidth_type='down',
-                ),
-                widget.NetGraph(
-                    type='line',
-                    line_width = 4,
-                    border_width = 0,
-                    bandwidth_type='up',
-                    graph_color= colors[3],
-                ),
+                # widget.NetGraph(
+                #     type='line',
+                #     line_width = 4,
+                #     border_width = 0,
+                #     bandwidth_type='down',
+                # ),
+                # widget.NetGraph(
+                #     type='line',
+                #     line_width = 4,
+                #     border_width = 0,
+                #     bandwidth_type='up',
+                #     graph_color= colors[3],
+                # ),
                 # widget.Net(
                 #     font="Noto Sans medium",
                 #     fontsize = 18,
@@ -397,7 +370,7 @@ screens = [
                     text="",
                     foreground=colors[9],
                     fontsize=28,
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty')},
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('kitty')},
                     padding = 5,
                 ),
                 widget.TextBox(
@@ -417,7 +390,7 @@ screens = [
                     update_interval = 600,
                     distro = "Arch_checkupdates",
                     display_format = " {updates} ",
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e yay')},
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('kitty yay')},
                     padding = 30,
                 ),
                 widget.WindowName(
@@ -450,7 +423,7 @@ screens = [
                     fontsize = 22,
                     foreground=colors[6],
                     format="%d.%m.%y",
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('alacritty -e calcurse')},
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('kitty calcurse')},
                 ),
                 widget.KeyboardLayout(
                     font="FontAwesome",
@@ -471,26 +444,64 @@ screens = [
             opacity = 0.8
         ),
     ),
-    # Screen(
-    #     top=bar.Bar(
-    #         [
-    #             widget.WindowName(
-    #                 font="Noto Sans medium",
-    #                 fontsize = 16,
-    #                 foreground = colors[4],
-    #                 for_current_screen=True,
-    #                 format = '',
-    #             ),
-    #             # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-    #             # widget.StatusNotifier(),
-    #             #widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-    #         ],
-    #         size = 32,
-    #         opacity = 0.8
-    #         # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-    #         # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-    #     ),
-    # ),
+    Screen(
+        top=bar.Bar(
+            [
+                # widget.WindowName(
+                #     font="Noto Sans medium",
+                #     fontsize = 16,
+                #     foreground = colors[4],
+                #     for_current_screen=True,
+                #     format = '',
+                # ),
+                widget.TaskList(
+                    foreground = colors[0],
+                    border = colors[3],
+                    unfocused_border = colors[5],
+                    borderwidth = 2,
+                    font = "Noto Sans medium",
+                    fontsize = 14,
+                    icon_size = 0,
+                    highlight_method = 'block',
+                    rounded = False,
+                    padding_x = 10,
+                    padding_y = 0,
+                ),
+                widget.WindowName(
+                    format = '',
+                ),
+# --------------- RIGHT SIDE -------------------------------------------------
+                widget.Clock(
+                    font="Noto Sans medium",
+                    fontsize = 18,
+                    foreground=colors[6],
+                    format="%d.%m.%y",
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('kitty calcurse')},
+                ),
+                widget.KeyboardLayout(
+                    font="FontAwesome",
+                    fontsize = 20,
+                    foreground = colors[3],
+                    configured_keyboards = ['de', 'ru'],
+                    display_map = {'de':'', 'ru':''},
+                    padding = 15,
+                ),
+                widget.Clock(
+                    font="Noto Sans medium",
+                    fontsize = 18,
+                    foreground=colors[6],
+                    format="%H:%M:%S",
+                ),
+                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+                # widget.StatusNotifier(),
+                #widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+            ],
+            size = 26,
+            opacity = 0.8
+            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+        ),
+    ),
 
 
 ]
