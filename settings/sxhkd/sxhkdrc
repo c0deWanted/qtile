@@ -27,17 +27,13 @@ super + w
 super + m 
     ~/AppImages/mullvad-browser/Browser/start-mullvad-browser --detach
 
-#Emacs client
+# File manager
 super + e
-    emacsclient -c
+    krusader
 
 #Rofi
 super + r
     rofi -show drun
-
-#Thunar
-super + t
-    krusader
 
 #Power Manager
 super + z
@@ -47,12 +43,16 @@ super + z
 super + o
     obsidian
 
+# Text editor
+super + s
+    emacsclient -c
+
 #archlinux-logout
 super + x
     archlinux-logout
 
 #Pavucontrol
-super + v
+super + c
     pavucontrol
 
 #Change wallpaper
