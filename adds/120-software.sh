@@ -64,13 +64,13 @@ networkmanager-openvpn
 #nomacs
 ntp
 numlockx
-obsidian
+#obsidian
 #onlyoffice-bin
 openresolv
 peek
 python-pywal
 pv
-solaar
+#solaar
 speedtest-cli
 system-config-printer
 tldr
