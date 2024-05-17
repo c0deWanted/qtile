@@ -148,7 +148,7 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 
     # Stage 3 - some visual tools
     echo -e "$CNT - Stage 3 - Installing theme and visual related tools and utilities, this may take a while..."
-    for SOFTWR in feh flameshot guvcview simplicity-sddm-theme-git sweet-gtk-theme-mars-git kvantum papirus-icon-theme vimix-cursors
+    for SOFTWR in feh flameshot simplicity-sddm-theme-git sweet-gtk-theme-mars-git kvantum papirus-icon-theme vimix-cursors
     do
         install_software $SOFTWR
     done

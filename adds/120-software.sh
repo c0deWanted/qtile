@@ -50,9 +50,9 @@ geeqie
 gimp
 gnome-calculator
 gvfs-smb
-hardinfo-git
+hardinfo2-git
 hblock
-hw-probe
+#hw-probe
 iftop
 inxi
 libreoffice-fresh
